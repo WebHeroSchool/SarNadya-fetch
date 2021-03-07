@@ -19,7 +19,11 @@ const url = `https://api.github.com/users/${username}`;
 //получаем данные о пользователе из запроса fetch
 fetch(url)
 .then(response => {
+  if (response.status > 200) {
+    throw new Error();
+  } else {
   return response.json();
+  }
 })
 .then(json => {
   let name = json.name;
@@ -32,4 +36,7 @@ fetch(url)
   document.querySelector('.description').innerHTML = bio;
   document.body.append(img);
 })
-.catch(err => document.querySelector('.name').innerHTML = "Информация о пользователе не доступна");
+.catch(err => {
+  document.querySelector('.name').innerHTML = "Информация о пользователе не доступна";
+  document.querySelector('.description').innerHTML = "Описание пользователя отсутствует";
+});
