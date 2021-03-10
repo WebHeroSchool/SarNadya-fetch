@@ -20,11 +20,12 @@ const url = `https://api.github.com/users/${username}`;
 fetch(url)
 .then(response => {
   if (response.status > 200) {
-    throw new Error();
+    username = undefined;
   } else {
   return response.json();
   }
 })
+// .then(response => response.json)
 .then(json => {
   let name = json.name;
   let bio = json.bio;
@@ -36,7 +37,30 @@ fetch(url)
   document.querySelector('.description').innerHTML = bio;
   document.body.append(img);
 })
-.catch(err => {
-  document.querySelector('.name').innerHTML = "Информация о пользователе не доступна";
-  document.querySelector('.description').innerHTML = "Описание пользователя отсутствует";
+// .catch(err => {
+//   document.querySelector('.name').innerHTML = "Информация о пользователе не доступна";
+//   document.querySelector('.description').innerHTML = "Описание пользователя отсутствует";
+// });
+const date = new Date();
+const getDate = date.toDateString();
+
+const loading = document.getElementById('loading');
+console.log(loading);
+
+const getName = new Promise((resolve, reject) => {
+  setTimeout(() => username ? resolve(username): reject(alert("Информация о пользователе не доступна")), 2000);
 });
+
+
+const writeDate = new Promise((resolve, reject) => {
+  setTimeout(() => resolve(document.querySelector('.date').innerHTML = getDate), 2000);
+});
+
+// const userLoading = new Promise((resolve, reject) => {
+//   setTimeout(() => resolve(document.querySelector('.off').removeClass, 2000);
+// });
+
+ // пока не получим данные о пользователе, загружаем прелоадер
+// const setPreloadr = new Promise((resolve, reject) => {
+//   setTimeout(() => username ? resolve(loading.classList.add('off')), 2000);
+// })
